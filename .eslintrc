@@ -21,7 +21,7 @@
   },
   "rules": {
     "no-unused-vars": [
-      "error",
+      "warn",
       {
         "vars": "all",
         "args": "after-used",
@@ -29,6 +29,7 @@
         "argsIgnorePattern": "^_"
       }
     ],
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "no-console": "off"
   }
 }

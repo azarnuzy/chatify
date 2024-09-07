@@ -58,7 +58,7 @@ const messages = [
 ]; // Replace with dynamic data
 
 const ChatContent = () => {
-  const [message, setMessage] = useState('');
+  const [message] = useState('');
 
   const form = useForm<z.infer<typeof ValidationSchemaChat>>({
     resolver: zodResolver(ValidationSchemaChat),

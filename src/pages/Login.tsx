@@ -1,8 +1,3 @@
-// src/components/Login.js
-import React from 'react';
-
-const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
-
 const LoginPage = () => {
   return (
     <div>

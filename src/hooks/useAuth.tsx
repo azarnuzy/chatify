@@ -11,7 +11,7 @@ type DataLogin = {
 
 const AuthContext = createContext({
   user: null,
-  login: async (data: DataLogin) => {},
+  login: async (_data: DataLogin) => {},
   logout: () => {}
 });
 
