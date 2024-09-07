@@ -1,14 +1,12 @@
-import React from 'react';
+import MainLayout from '../components/layout/MainLayout';
 
 const HomePage = () => {
   return (
-    <div>
-      <h1>Home Page</h1>
-      <p>This is the home page</p>
-      <a href="/login">
-        <button>Login</button>
-      </a>
-    </div>
+    <MainLayout>
+      <div className="flex w-full justify-center mt-14 sm:mt-10">
+        <img src={'/logo.png'} alt="Logo" />
+      </div>
+    </MainLayout>
   );
 };
 

@@ -5,6 +5,7 @@ export const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { login } = useAuth();
+
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Here you would usually send a request to your backend to authenticate the user
@@ -16,6 +17,7 @@ export const LoginPage = () => {
       alert('Invalid username or password');
     }
   };
+
   return (
     <div>
       <form onSubmit={handleLogin}>

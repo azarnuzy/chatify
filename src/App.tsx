@@ -5,8 +5,8 @@ import './App.css';
 import { AuthProvider } from './hooks/useAuth';
 import HomePage from './pages/HomePage';
 import { LoginPage } from './pages/Login';
+import { Secret } from './pages/Secret';
 import { ProtectedRoute } from './routing/ProtectedRoute';
-import { Secret } from './routing/Secret';
 
 function App() {
   return (
