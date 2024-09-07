@@ -3,6 +3,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { FaArrowLeft } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import { z } from 'zod';
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -91,6 +93,9 @@ const ChatContent = () => {
     <div className="flex w-full flex-col">
       <div className="h-[50px] bg-white w-full  flex justify-between items-center px-5">
         <div className="flex gap-3 items-center">
+          <Link to="/">
+            <FaArrowLeft className="text-gray-500 text-2xl sm:hidden" />
+          </Link>
           <Avatar className="bg-primary-500 text-white ">
             <AvatarFallback>{'A'}</AvatarFallback>
           </Avatar>
@@ -100,9 +105,9 @@ const ChatContent = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-full pb-5 sm:mt-0 h-[calc(100vh-51.5px-50px)] justify-between relative">
+      <div className="flex flex-col w-full pb-5 sm:mt-0 h-[calc(100vh-51.5px)] sm:h-[calc(100vh-51.5px-50px)] justify-between relative">
         <div
-          className="flex flex-col gap-5 max-h-[calc(100vh-51.5px-50px-60px)] py-5 overflow-y-auto  px-5 "
+          className="flex flex-col gap-5 max-h-[calc(100vh-50px-60px)] sm:max-h-[calc(100vh-51.5px-50px-60px)] py-5 overflow-y-auto  px-5 "
           ref={containerRef}
           style={{ scrollBehavior: 'smooth' }}
         >
