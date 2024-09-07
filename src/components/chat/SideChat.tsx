@@ -1,5 +1,6 @@
 // src/components/SideChat.js
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
@@ -38,7 +39,8 @@ const SideChat = () => {
       </div>
       <div className="flex flex-col gap-2">
         {userLists.map((user, index) => (
-          <div
+          <Link
+            to={'/chat/' + user.id}
             key={index}
             className="flex items-center gap-2 p-2 bg-white px-4 hover:bg-neutral-200 transition-all duration-300 ease-in-out cursor-pointer "
           >
@@ -50,7 +52,7 @@ const SideChat = () => {
               <p className="text-sm text-gray-500">{user.message}</p>
             </div>
             <div className="text-sm text-gray-500">{user.time}</div>
-          </div>
+          </Link>
         ))}
       </div>
     </>

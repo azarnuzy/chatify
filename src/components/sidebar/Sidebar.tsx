@@ -1,4 +1,3 @@
-import React from 'react';
 import { BsFillChatDotsFill } from 'react-icons/bs';
 import { IoMenu, IoMoon, IoSunny } from 'react-icons/io5';
 import { useRecoilState } from 'recoil';

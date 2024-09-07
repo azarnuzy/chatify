@@ -1,60 +1,89 @@
 // src/components/ChatContent.js
 
-import axios from 'axios';
 import { useState } from 'react';
 
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+
 const messages = [
-  { sender: 'User1', text: 'Hello there!' },
-  { sender: 'User2', text: 'Hi! How are you?' },
-  { sender: 'User1', text: 'I am doing well, thanks!' }
+  {
+    id: 1,
+    message: 'Hello there! How are you?',
+    speaker: 'bot',
+    time: '12:00 PM'
+  },
+  {
+    id: 2,
+    message: 'Hi Alice! I am doing well, thanks! How about you? ',
+    speaker: 'user',
+    time: '12:01 PM'
+  },
+  {
+    id: 3,
+    message:
+      'Hey there! How can I help you today? let me know if you have any questions. Have a great day! See you soon! Goodbye! ',
+    speaker: 'bot',
+    time: '12:02 PM'
+  },
+  {
+    id: 4,
+    message:
+      'Hola Amigo! How are you doing today? let me know if you have any questions. Have a great day! See you soon! Goodbye! Thanks! I am doing well, thanks! How about you? ',
+    speaker: 'user',
+    time: '12:03 PM'
+  }
 ]; // Replace with dynamic data
 
 const ChatContent = () => {
   const [message, setMessage] = useState('');
-  const accessToken = localStorage.getItem('slack_access_token'); // Retrieve the stored token
 
-  const sendMessage = async () => {
-    try {
-      const response = await axios.post(
-        'https://slack.com/api/chat.postMessage',
-        {
-          channel: 'U07LFCS65C4', // Replace with the user ID or channel ID
-          text: message
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-      console.log('Message sent:', response.data);
-    } catch (error) {
-      console.error('Error sending message:', error);
-    }
+  const sendMessage = () => {
+    console.log(message);
   };
 
   return (
-    <div className="flex-1 p-6 bg-gray-100">
-      <div className="h-[calc(100vh-180px)] overflow-y-scroll">
-        {messages.map((message, index) => (
-          <div key={index} className="mb-4">
-            <div className="text-sm text-gray-500">{message.sender}</div>
-            <div className="p-4 bg-white rounded-lg shadow-md">{message.text}</div>
+    <div className="flex w-full flex-col">
+      <div className="h-[50px] bg-white w-full  flex justify-between items-center px-5">
+        <div className="flex gap-3 items-center">
+          <Avatar className="bg-primary-500 text-white ">
+            <AvatarFallback>{'A'}</AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col">
+            <h4 className="text-gray-800 text-lg font-semibold">Arnold</h4>
+            <p className="text-xs">Online</p>
           </div>
-        ))}
+        </div>
       </div>
-      <div className="my-4 flex gap-4 items-center">
-        <input
-          type="text"
-          placeholder="Type your message..."
-          className="w-full p-3 sm:p-4 border rounded-lg"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-        <button className=" bg-blue-500 text-white px-4 py-3 rounded-lg whitespace-nowrap" onClick={sendMessage}>
-          Send Message
-        </button>
+      <div className="flex flex-col w-full pt-5 px-5 sm:mt-0 h-[calc(100vh-51.5px-50px)] justify-between">
+        <div className="flex flex-col gap-5">
+          {messages.map((item, i) => {
+            return (
+              <div className={`flex gap-3 ${i % 2 === 0 ? 'justify-end' : 'justify-start'}`} key={i}>
+                {/* Bot Answer  */}
+                {i % 2 === 1 && (
+                  <>
+                    <div className="relative p-2 rounded-xl max-w-[70%] sm:max-w-[80%] bg-white dark:bg-dark-gray-3 dark:text-light-white shadow-xl">
+                      <p className="mr-3 mb-1 text-sm sm:text-base">
+                        {item?.message || 'Maaf saya tidak mengerti, tolong tanyakan beberapa saat lagi'}
+                      </p>
+                      <p className="text-[11px] text-dark-gray-3 text-end dark:text-light-white">{item.time}</p>
+                      <div className="w-9 h-2 dark:bg-dark-gray-3 bg-white absolute top-0 -left-1 rounded-bl-3xl"></div>
+                    </div>
+                  </>
+                )}
+                {/* User Input */}
+                {i % 2 === 0 && (
+                  <>
+                    <div className="relative p-2 rounded-xl max-w-[70%] sm:max-w-[80%] bg-white shadow-xl dark:bg-dark-gray-3 dark:text-light-white">
+                      <p className="mr-3 mb-1 text-sm sm:text-base">{item?.message}</p>
+                      <p className="text-[11px] text-dark-gray-3 text-end dark:text-light-white">{item.time}</p>
+                      <div className="w-9 h-2 bg-white absolute top-0 -right-1 rounded-br-3xl dark:bg-dark-gray-3"></div>
+                    </div>
+                  </>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
