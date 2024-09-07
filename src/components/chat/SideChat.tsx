@@ -1,6 +1,6 @@
-// src/components/SideChat.js
-import React from 'react';
 import { Link } from 'react-router-dom';
+
+import { contentTrimmed } from '@/lib/utils';
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
@@ -49,7 +49,10 @@ const SideChat = () => {
             </Avatar>
             <div className="flex-1">
               <h4 className="font-semibold">{user.name}</h4>
-              <p className="text-sm text-gray-500">{user.message}</p>
+              <p className="text-sm text-gray-500 hidden sm:block md:hidden">{contentTrimmed(user.message, 22)}</p>
+              <p className="text-sm text-gray-500 block sm:hidden">{contentTrimmed(user.message, 35)}</p>
+              <p className="text-sm text-gray-500 xl:hidden md:block hidden">{contentTrimmed(user.message, 35)}</p>
+              <p className="text-sm text-gray-500 hidden xl:block">{contentTrimmed(user.message, 50)}</p>
             </div>
             <div className="text-sm text-gray-500">{user.time}</div>
           </Link>

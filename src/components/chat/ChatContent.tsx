@@ -1,8 +1,16 @@
 // src/components/ChatContent.js
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
+import { Textarea } from '@/components/ui/textarea';
+
+import { ValidationSchemaChat } from '@/utils/validations/chat';
 
 const messages = [
   {
@@ -50,7 +58,14 @@ const messages = [
 const ChatContent = () => {
   const [message, setMessage] = useState('');
 
-  const sendMessage = () => {
+  const form = useForm<z.infer<typeof ValidationSchemaChat>>({
+    resolver: zodResolver(ValidationSchemaChat),
+    defaultValues: {
+      message: ''
+    }
+  });
+
+  const onSubmit = () => {
     console.log(message);
   };
 
@@ -120,7 +135,26 @@ const ChatContent = () => {
             );
           })}
         </div>
-        <div className="absolute bottom-0 min-h-[60px] w-full bg-white"></div>
+        <div className="absolute bottom-0 min-h-[60px] w-full bg-white rounded-md">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-2 items-center">
+              <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem className="w-full ">
+                    <FormControl>
+                      <Textarea placeholder="Type a message" className="resize-none " {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <Button className="w-fit" type="submit">
+                Submit
+              </Button>
+            </form>
+          </Form>
+        </div>
       </div>
     </div>
   );
