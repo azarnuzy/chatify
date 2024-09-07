@@ -1,36 +1,22 @@
-import { useState } from 'react';
+// src/components/Login.js
+import React from 'react';
 
-import { useAuth } from '../hooks/useAuth';
-export const LoginPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const { login } = useAuth();
+const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // Here you would usually send a request to your backend to authenticate the user
-    // For the sake of this example, we're using a mock authentication
-    if (username === 'user' && password === 'password') {
-      // Replace with actual authentication logic
-      await login({ username: 'user', password: 'password' });
-    } else {
-      alert('Invalid username or password');
-    }
-  };
-
+const LoginPage = () => {
   return (
     <div>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label htmlFor="username">Username:</label>
-          <input id="username" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </div>
-        <button type="submit">Login</button>
-      </form>
+      <a href="https://slack.com/oauth/v2/authorize?client_id=7690010220725.7692792019875&scope=channels:history,chat:write,chat:write.customize,chat:write.public,conversations.connect:read,emoji:read,im:history,im:read,im:write,links:read,reactions:read,channels:read&user_scope=">
+        <img
+          alt="Add to Slack"
+          height="40"
+          width="139"
+          src="https://platform.slack-edge.com/img/add_to_slack.png"
+          srcSet="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"
+        />
+      </a>
     </div>
   );
 };
+
+export default LoginPage;

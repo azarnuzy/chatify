@@ -1,9 +1,14 @@
 /** @type {import('tailwindcss').Config} */
+import defaultTheme from 'tailwindcss/defaultTheme';
+
 export default {
   darkMode: ['class'],
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        primary: ['Inter', ...defaultTheme.fontFamily.sans]
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
@@ -13,16 +18,16 @@ export default {
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
-          100: '#CFD9E8',
-          200: '#B0C0D8',
-          300: '#88A0C5',
-          400: '#6080B2',
-          500: '#39619E',
-          main: '#11418B',
-          600: '#0E3674',
-          700: '#0B2B5D',
-          800: '#092146',
-          900: '#06162E'
+          100: '#EAF3FE',
+          200: '#D5E8FC',
+          300: '#AAD1F9',
+          400: '#80B9F7',
+          500: '#55A2F4',
+          main: '#2b8bf1',
+          600: '#226FC1',
+          700: '#1A5391',
+          800: '#113860',
+          900: '#091C30'
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
