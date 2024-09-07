@@ -1,6 +1,6 @@
 // src/components/ChatContent.js
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
@@ -30,6 +30,20 @@ const messages = [
       'Hola Amigo! How are you doing today? let me know if you have any questions. Have a great day! See you soon! Goodbye! Thanks! I am doing well, thanks! How about you? ',
     speaker: 'user',
     time: '12:03 PM'
+  },
+  {
+    id: 4,
+    message:
+      'Hola Amigo! How are you doing today? let me know if you have any questions. Have a great day! See you soon! Goodbye! Thanks! I am doing well, thanks! How about you? ',
+    speaker: 'user',
+    time: '12:03 PM'
+  },
+  {
+    id: 4,
+    message:
+      'Hola Amigo! How are you doing today? let me know if you have any questions. Have a great day! See you soon! Goodbye! Thanks! I am doing well, thanks! How about you? ',
+    speaker: 'user',
+    time: '12:03 PM'
   }
 ]; // Replace with dynamic data
 
@@ -38,6 +52,24 @@ const ChatContent = () => {
 
   const sendMessage = () => {
     console.log(message);
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      scrollToBottom();
+    }, 0);
+  }, []);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // when user add message it will be scroll to bottom for the newest messages
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      containerRef.current?.scrollTo({
+        top: containerRef.current?.scrollHeight,
+        behavior: 'smooth'
+      });
+    }, 0);
   };
 
   return (
@@ -53,8 +85,12 @@ const ChatContent = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-full pt-5 px-5 sm:mt-0 h-[calc(100vh-51.5px-50px)] justify-between">
-        <div className="flex flex-col gap-5">
+      <div className="flex flex-col w-full pb-5 sm:mt-0 h-[calc(100vh-51.5px-50px)] justify-between relative">
+        <div
+          className="flex flex-col gap-5 max-h-[calc(100vh-51.5px-50px-60px)] py-5 overflow-y-auto  px-5 "
+          ref={containerRef}
+          style={{ scrollBehavior: 'smooth' }}
+        >
           {messages.map((item, i) => {
             return (
               <div className={`flex gap-3 ${i % 2 === 0 ? 'justify-end' : 'justify-start'}`} key={i}>
@@ -84,6 +120,7 @@ const ChatContent = () => {
             );
           })}
         </div>
+        <div className="absolute bottom-0 min-h-[60px] w-full bg-white"></div>
       </div>
     </div>
   );
