@@ -5,6 +5,7 @@ import { AxiosError } from 'axios';
 import {
   createNewMessageRequest,
   createNewPostRequest,
+  getAllUsersRequest,
   getChatsByIdRequest,
   getChatsByUsersRequest,
   getMessagesRequest
@@ -19,6 +20,7 @@ import {
   TGetChatsByUserData,
   TGetMessagesData
 } from '@/types/chat';
+import { TGetAllUserData } from '@/types/users';
 
 export const useGetChatsByUser = (): UseQueryResult<TGetChatsByUserData, TMetaErrorResponse> =>
   useQuery({
@@ -110,3 +112,18 @@ export const useCreateNewMessage = (): UseMutationResult<
     }
   });
 };
+
+export const useGetAllUsers = (): UseQueryResult<TGetAllUserData, TMetaErrorResponse> =>
+  useQuery({
+    queryKey: ['get-all-users'],
+    queryFn: async () => {
+      try {
+        return await getAllUsersRequest();
+      } catch (error: any) {
+        if (error instanceof AxiosError && error.response) {
+          throw new Error(error.response.data?.message || 'An error occurred while fetching users');
+        }
+        throw error;
+      }
+    }
+  });

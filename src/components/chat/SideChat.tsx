@@ -1,60 +1,64 @@
 import { Link } from 'react-router-dom';
 
-import { contentTrimmed } from '@/lib/utils';
+import { contentTrimmed, formatDate } from '@/lib/utils';
+import { useGetChatsByUser } from '@/hooks/chat/hook';
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
-const userLists = [
-  {
-    id: 1,
-    name: 'Alice',
-    message: 'Hello there! How are you?',
-    time: '12:00 PM'
-  },
-  {
-    id: 2,
-    name: 'Bob',
-    message: 'Hi Alice! I am doing well, thanks!',
-    time: '12:01 PM'
-  },
-  {
-    id: 3,
-    name: 'Charlie',
-    message: 'Hey there!',
-    time: '12:02 PM'
-  },
-  {
-    id: 4,
-    name: 'David',
-    message: 'Hola Amigo!',
-    time: '12:03 PM'
-  }
-];
+import { TGetChatsByUser } from '@/types/chat';
 
 const SideChat = () => {
+  // Fetch chat data using the hook
+  const { data, isLoading, error } = useGetChatsByUser();
+
+  // Sort chats by the created_at date in descending order
+  const sortedChats = data?.data?.sort((a: TGetChatsByUser, b: TGetChatsByUser) => {
+    return new Date(b.latestMessage?.created_at).getTime() - new Date(a.latestMessage?.created_at).getTime();
+  });
+
+  // Handle loading and error states
+  if (isLoading) {
+    return <div>Loading chats...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading chats: {error.message}</div>;
+  }
+
   return (
     <>
       <div className="flex justify-between mb-2 rounded-md">
         <h3 className="px-4">Messages</h3>
       </div>
       <div className="flex flex-col gap-2">
-        {userLists.map((user, index) => (
+        {sortedChats?.map((chat: TGetChatsByUser, index) => (
           <Link
-            to={'/chat/' + user.id}
+            to={'/chat/' + chat.id}
             key={index}
-            className="flex items-center gap-2 p-2 bg-white px-4 hover:bg-neutral-200 transition-all duration-300 ease-in-out cursor-pointer "
+            className="flex items-center gap-2 p-2 bg-white px-4 hover:bg-neutral-200 transition-all duration-300 ease-in-out cursor-pointer"
           >
             <Avatar className="bg-primary-500 text-white">
-              <AvatarFallback>{user.name[0]}</AvatarFallback>
+              {/* Fallback to 'U' if the partner's name is not available */}
+              <AvatarFallback>{chat.partner[0]?.name?.[0] || 'U'}</AvatarFallback>
             </Avatar>
             <div className="flex-1">
-              <h4 className="font-semibold">{user.name}</h4>
-              <p className="text-sm text-gray-500 hidden sm:block md:hidden">{contentTrimmed(user.message, 22)}</p>
-              <p className="text-sm text-gray-500 block sm:hidden">{contentTrimmed(user.message, 35)}</p>
-              <p className="text-sm text-gray-500 xl:hidden md:block hidden">{contentTrimmed(user.message, 35)}</p>
-              <p className="text-sm text-gray-500 hidden xl:block">{contentTrimmed(user.message, 50)}</p>
+              <h4 className="font-semibold">{chat.partner[0]?.name || 'Unknown Partner'}</h4>
+              <p className="text-sm text-gray-500 hidden sm:block md:hidden">
+                {/* Trimming the latest message content */}
+                {contentTrimmed(chat.latestMessage?.content || 'No message yet', 22)}
+              </p>
+              <p className="text-sm text-gray-500 block sm:hidden">
+                {contentTrimmed(chat.latestMessage?.content || 'No message yet', 35)}
+              </p>
+              <p className="text-sm text-gray-500 xl:hidden md:block hidden">
+                {contentTrimmed(chat.latestMessage?.content || 'No message yet', 35)}
+              </p>
+              <p className="text-sm text-gray-500 hidden xl:block">
+                {contentTrimmed(chat.latestMessage?.content || 'No message yet', 50)}
+              </p>
             </div>
-            <div className="text-sm text-gray-500">{user.time}</div>
+            {/* Display the time of the latest message */}
+            <div className="text-sm text-gray-500">{chat.latestMessage ? formatDate(chat.created_at) : ''}</div>
           </Link>
         ))}
       </div>

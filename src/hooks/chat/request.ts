@@ -8,6 +8,7 @@ import {
   TGetChatsByUserData,
   TGetMessagesData
 } from '@/types/chat';
+import { TGetAllUserData } from '@/types/users';
 
 export const getChatsByUsersRequest = async (): Promise<TGetChatsByUserData> => {
   const { data } = await api.get('/v1/chats');
@@ -35,6 +36,12 @@ export const getMessagesRequest = async (id: string): Promise<TGetMessagesData> 
 
 export const createNewMessageRequest = async (payload: TCreateNewMessageBody): Promise<TGetMessagesData> => {
   const { data } = await api.post('/v1/messages', payload);
+
+  return data;
+};
+
+export const getAllUsersRequest = async (): Promise<TGetAllUserData> => {
+  const { data } = await api.get('/v1/users');
 
   return data;
 };

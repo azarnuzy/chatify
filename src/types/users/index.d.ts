@@ -7,4 +7,4 @@ export interface TUser {
   updatedAt: string;
 }
 
-export type TUserData = TMetaResponseSingle<TUser>;
+export type TGetAllUserData = TMetaResponseSingle<TUser>;
