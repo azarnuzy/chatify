@@ -2,9 +2,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaSpinner } from 'react-icons/fa';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { cn } from '@/lib/utils';
+import { useRegister } from '@/hooks/auth/hook';
 
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
@@ -19,6 +21,8 @@ export function RegisterForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
+  const { mutate } = useRegister();
+
   const form = useForm<z.infer<typeof ValidationSchemaRegister>>({
     resolver: zodResolver(ValidationSchemaRegister),
     defaultValues: {
@@ -28,19 +32,35 @@ export function RegisterForm({ className, ...props }: UserAuthFormProps) {
     }
   });
 
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
-    setIsLoading(true);
+  async function onSubmit(data: z.infer<typeof ValidationSchemaRegister>) {
+    try {
+      setIsLoading(true);
+      const payload = {
+        name: data.username,
+        email: data.email,
+        password: data.password
+      };
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+      mutate(payload, {
+        onSuccess: () => {
+          setIsLoading(false);
+          toast.success('Register Success');
+        },
+        onError: (error) => {
+          setIsLoading(false);
+          setError(error?.response?.data.message || 'An error occurred');
+          toast.error('Register Failed');
+        }
+      });
+    } catch (error) {
+      throw new Error('Invalid Response');
+    }
   }
 
   return (
     <div className={cn('grid gap-4', className)} {...props}>
       <Form {...form}>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid ">
             <FormError message={error as string} />
             <TextField
@@ -78,7 +98,7 @@ export function RegisterForm({ className, ...props }: UserAuthFormProps) {
             />
             <Button className="bg-primary-main text-white" variant={'default'} disabled={isLoading}>
               {isLoading && <FaSpinner className="mr-2 h-4 w-4 animate-spin" />}
-              Sign In with Email
+              Register with Email
             </Button>
           </div>
         </form>
