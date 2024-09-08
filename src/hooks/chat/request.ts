@@ -22,7 +22,7 @@ export const getChatsByIdRequest = async (id: string): Promise<TGetChatByIdData>
   return data;
 };
 
-export const createNewPostRequest = async (payload: TCreateNewChatBody): Promise<TCreateNewChatData> => {
+export const createNewChatRequest = async (payload: TCreateNewChatBody): Promise<TCreateNewChatData> => {
   const { data } = await api.post<TCreateNewChatData>('/v1/chats', payload);
 
   return data;

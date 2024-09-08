@@ -3,8 +3,8 @@ import { useMutation, UseMutationResult, useQuery, UseQueryResult } from '@tanst
 import { AxiosError } from 'axios';
 
 import {
+  createNewChatRequest,
   createNewMessageRequest,
-  createNewPostRequest,
   getAllUsersRequest,
   getChatsByIdRequest,
   getChatsByUsersRequest,
@@ -50,12 +50,12 @@ export const useGetChatsById = (id: string): UseQueryResult<TGetChatByIdData, TM
     }
   });
 
-export const useCreateNewPost = (): UseMutationResult<TCreateNewChatData, TMetaErrorResponse, TCreateNewChatBody> => {
+export const useCreateNewChat = (): UseMutationResult<TCreateNewChatData, TMetaErrorResponse, TCreateNewChatBody> => {
   return useMutation<TCreateNewChatData, TMetaErrorResponse, TCreateNewChatBody>({
     mutationKey: ['create-new-post'],
     mutationFn: async (payload: TCreateNewChatBody) => {
       try {
-        const response = await createNewPostRequest(payload);
+        const response = await createNewChatRequest(payload);
 
         if (!response) {
           throw new Error('Failed to create new post');

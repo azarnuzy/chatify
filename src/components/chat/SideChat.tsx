@@ -1,76 +1,91 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { FaSpinner } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
-import { contentTrimmed, formatDate } from '@/lib/utils';
-import { useGetChatsByUser } from '@/hooks/chat/hook';
+import { useCreateNewChat, useGetAllUsers, useGetChatsByUser } from '@/hooks/chat/hook';
 
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import ChatList from '@/components/chat/ChatList';
+import NewChatDialog from '@/components/chat/NewChatDialog';
 
-import { TGetChatsByUser } from '@/types/chat';
+import { ValidationSchemaNewChat } from '@/utils/validations/chat';
+
+import { TUser } from '@/types/users';
 
 const SideChat = () => {
-  // Fetch chat data using the hook
-  const { data, isLoading, error } = useGetChatsByUser();
+  const navigate = useNavigate();
 
-  // Sort chats by the created_at date in descending order
-  const sortedChats = data?.data?.sort((a: TGetChatsByUser, b: TGetChatsByUser) => {
-    return new Date(b.latestMessage?.created_at).getTime() - new Date(a.latestMessage?.created_at).getTime();
+  const form = useForm<z.infer<typeof ValidationSchemaNewChat>>({
+    resolver: zodResolver(ValidationSchemaNewChat),
+    defaultValues: {
+      name: ''
+    }
   });
 
-  // Handle loading and error states
-  if (isLoading) {
-    return (
-      <div className="h-full flex justify-center items-center">
-        <FaSpinner className="mr-2 h-4 w-4 animate-spin" />
-        Loading...
-      </div>
-    );
-  }
+  const [isLoadingCreateChat, setIsLoadingCreateChat] = useState<boolean>(false);
+  const [recipient_id, setRecipientId] = useState<number>(0);
 
-  if (error) {
-    return (
-      <div className="text-red-500 h-full flex items-center justify-center">Error loading chats: {error.message}</div>
-    );
-  }
+  const { mutate } = useCreateNewChat();
+  const { data, isLoading, error } = useGetChatsByUser();
+  const { data: userData } = useGetAllUsers();
+
+  // Filter out users that are already part of an existing chat
+  const filteredUsers = userData?.data?.filter((user: TUser) => {
+    return !data?.data?.some((chat) => chat.partner.some((partner) => partner.id === user.id));
+  });
+
+  const onSubmit = async (data: z.infer<typeof ValidationSchemaNewChat>) => {
+    try {
+      const payload = {
+        name: data.name,
+        type: 'personal',
+        recipient_id: recipient_id
+      };
+      setIsLoadingCreateChat(true);
+      await mutate(payload, {
+        onSuccess: (data) => {
+          setIsLoadingCreateChat(false);
+          toast.success('Chat created successfully');
+          form.reset();
+          navigate(`/chat/${data.data.id}`);
+        },
+        onError: (error) => {
+          setIsLoadingCreateChat(false);
+          toast.error(error?.response?.data.message || 'An error occurred while creating the chat');
+        }
+      });
+    } catch (error) {
+      throw new Error('Invalid response');
+    }
+  };
 
   return (
-    <>
-      <div className="flex justify-between mb-2 rounded-md">
-        <h3 className="px-4">Messages</h3>
+    <div className="flex flex-col h-full">
+      <div className="flex justify-between mb-2 rounded-md px-4">
+        <h3 className="">Messages</h3>
+        <NewChatDialog
+          userData={filteredUsers}
+          form={form}
+          onSubmit={onSubmit}
+          setRecipientId={setRecipientId}
+          isLoadingCreateChat={isLoadingCreateChat}
+        />
       </div>
-      <div className="flex flex-col gap-2">
-        {sortedChats?.map((chat: TGetChatsByUser, index) => (
-          <Link
-            to={'/chat/' + chat.id}
-            key={index}
-            className="flex items-center gap-2 p-2 bg-white px-4 hover:bg-neutral-200 transition-all duration-300 ease-in-out cursor-pointer"
-          >
-            <Avatar className="bg-primary-500 text-white">
-              {/* Fallback to 'U' if the partner's name is not available */}
-              <AvatarFallback>{chat.partner[0]?.name?.[0] || 'U'}</AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <h4 className="font-semibold">{chat.partner[0]?.name || 'Unknown Partner'}</h4>
-              <p className="text-sm text-gray-500 hidden sm:block md:hidden">
-                {/* Trimming the latest message content */}
-                {contentTrimmed(chat.latestMessage?.content || 'No message yet', 22)}
-              </p>
-              <p className="text-sm text-gray-500 block sm:hidden">
-                {contentTrimmed(chat.latestMessage?.content || 'No message yet', 35)}
-              </p>
-              <p className="text-sm text-gray-500 xl:hidden md:block hidden">
-                {contentTrimmed(chat.latestMessage?.content || 'No message yet', 35)}
-              </p>
-              <p className="text-sm text-gray-500 hidden xl:block">
-                {contentTrimmed(chat.latestMessage?.content || 'No message yet', 50)}
-              </p>
-            </div>
-            {/* Display the time of the latest message */}
-            <div className="text-sm text-gray-500">{chat.latestMessage ? formatDate(chat.created_at) : ''}</div>
-          </Link>
-        ))}
-      </div>
-    </>
+
+      {isLoading ? (
+        <div className="h-full flex justify-center items-center">
+          <FaSpinner className="mr-2 h-4 w-4 animate-spin" />
+          Loading...
+        </div>
+      ) : error ? (
+        <div className="text-red-500 h-full flex items-center justify-center">Error loading chats: {error.message}</div>
+      ) : (
+        <ChatList chats={data?.data} />
+      )}
+    </div>
   );
 };
 

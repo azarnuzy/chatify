@@ -87,7 +87,6 @@ const ChatContent = () => {
           </div>
         </div>
       </div>
-
       <div className="flex flex-col w-full pb-5 sm:mt-0 h-[calc(100vh-51.5px)] sm:h-[calc(100vh-51.5px-51.5px)] justify-between relative">
         <div
           className="flex flex-col gap-2 max-h-[calc(100vh-50px-60px)] sm:max-h-[calc(100vh-51.5px-50px-60px)] py-5 overflow-y-auto px-5"
