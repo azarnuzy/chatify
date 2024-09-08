@@ -4,6 +4,8 @@ import { MdOutlineLogout } from 'react-icons/md';
 import { Link, useLocation } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 
+import { useAuth } from '@/hooks/useAuth';
+
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 import { darkModeState } from '../../states/sidebar/atom';
@@ -11,6 +13,8 @@ import { darkModeState } from '../../states/sidebar/atom';
 const Sidebar = () => {
   const [isDarkMode, setIsDarkMode] = useRecoilState(darkModeState);
   const location = useLocation();
+
+  const { logout } = useAuth();
 
   // Helper to check if a path is active
   const isActive = (path: string) => {
@@ -103,7 +107,12 @@ const Sidebar = () => {
         <div className="flex flex-col gap-4 items-center">
           {/* <Button className="rounded-md transition-colors duration-300 hover:bg-dark-200" variant="ghost">
           </Button> */}
-          <button className="rounded-md transition-colors duration-300 hover:bg-dark-200 w-full flex justify-center py-1 ">
+          <button
+            className="rounded-md transition-colors duration-300 hover:bg-dark-200 w-full flex justify-center py-1 "
+            onClick={() => {
+              logout();
+            }}
+          >
             <MdOutlineLogout className="text-3xl text-gray-500" />
           </button>
           <DarkModeToggle />

@@ -3,15 +3,11 @@
 import { createContext, useContext, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from './useLocalStorage';
-
-type DataLogin = {
-  username: string;
-  password: string;
-};
+import { TLogin } from '@/types/auth';
 
 const AuthContext = createContext({
   user: null,
-  login: async (_data: DataLogin) => {},
+  login: async (_data: TLogin) => {},
   logout: () => {}
 });
 
@@ -20,9 +16,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
 
   // call this function when you want to authenticate the user
-  const login = async (data: DataLogin) => {
+  const login = async (data: TLogin) => {
     setUser(data);
-    navigate('/profile');
+    navigate('/');
   };
 
   // call this function to sign out logged in user

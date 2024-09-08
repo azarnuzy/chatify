@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable unused-imports/no-unused-vars */
 import { useState } from 'react';
 
-export const useLocalStorage = (keyName: string, defaultValue: string | null | boolean) => {
+export const useLocalStorage = (keyName: string, defaultValue: string | null | boolean | any) => {
   const [storedValue, setStoredValue] = useState(() => {
     try {
       const value = window.localStorage.getItem(keyName);

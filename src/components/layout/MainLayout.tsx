@@ -3,6 +3,7 @@ import { BsFillChatDotsFill, BsRobot } from 'react-icons/bs';
 import { IoChatbubbleEllipsesOutline, IoMenu, IoMoon, IoSunny } from 'react-icons/io5';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
+import { Toaster } from 'sonner';
 
 import useMediaQuery from '@/hooks/useMediaQuery';
 
@@ -143,6 +144,7 @@ const MainLayout = () => {
           </div>
         </div>
       </div>
+      <Toaster position="top-right" richColors />
     </div>
   );
 };

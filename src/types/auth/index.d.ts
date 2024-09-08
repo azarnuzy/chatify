@@ -1,8 +1,4 @@
-export interface TLoginData {
-  status: string;
-  message: string;
-  data: TLogin;
-}
+import { TMetaResponseSingle } from '@/types';
 
 export interface TLogin {
   token: string;
@@ -15,14 +11,22 @@ export interface User {
   email: string;
 }
 
-export interface TRegisterData {
-  status: string;
-  message: string;
-  data: TRegister | null;
-}
-
 export interface TRegister {
   id: number;
   name: string;
   email: string;
 }
+
+export interface TLoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface TRegisterPayload {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export type TLoginData = TMetaResponseSingle<TLogin>;
+export type TRegisterData = TMetaResponseSingle<TRegister>;

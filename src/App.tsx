@@ -1,4 +1,6 @@
 // src/App.tsx
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import './App.css';
@@ -17,24 +19,37 @@ import RegisterPage from '@/pages/Register';
 import { ProtectedRoute } from '@/routing/ProtectedRoute';
 
 function App() {
-  return (
-    <AuthProvider>
-      <Routes>
-        <Route
-          element={
-            <ProtectedRoute>
-              <MainLayout />
-            </ProtectedRoute>
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false
           }
-        >
-          <Route path="/" element={<HomePage />} />
-          <Route path="/chat/:roomId" element={<ChatContent />} />
-          <Route path="/ai-chat" element={<AiChat />} />
-        </Route>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-      </Routes>
-    </AuthProvider>
+        }
+      })
+  );
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <Routes>
+          <Route
+            element={
+              <ProtectedRoute>
+                <MainLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="/" element={<HomePage />} />
+            <Route path="/chat/:roomId" element={<ChatContent />} />
+            <Route path="/ai-chat" element={<AiChat />} />
+          </Route>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+        </Routes>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 
