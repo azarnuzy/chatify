@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { zodResolver } from '@hookform/resolvers/zod';
 import EmojiPicker from 'emoji-picker-react'; // Assuming you have an emoji picker component
 import { useEffect, useRef, useState } from 'react';
@@ -6,9 +5,11 @@ import { useForm } from 'react-hook-form';
 import { BsEmojiSmile, BsSend } from 'react-icons/bs';
 import { FaArrowLeft, FaSpinner } from 'react-icons/fa';
 import { Link, useParams } from 'react-router-dom';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 import { formatDate } from '@/lib/utils'; // Assuming you have the formatDate utility
-import { useGetChatsById } from '@/hooks/chat/hook';
+import { useCreateNewMessage, useGetChatsById } from '@/hooks/chat/hook';
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -21,19 +22,36 @@ import { ValidationSchemaChat } from '@/utils/validations/chat';
 const ChatContent = () => {
   const [message, setMessage] = useState('');
   const { roomId } = useParams();
-  const { data, isLoading } = useGetChatsById(roomId as string); // Get chat data by roomId
+  const { data, isLoading, refetch } = useGetChatsById(roomId as string); // Get chat data by roomId
   const containerRef = useRef<HTMLDivElement>(null);
+  const { mutate } = useCreateNewMessage();
 
-  const form = useForm({
+  const form = useForm<z.infer<typeof ValidationSchemaChat>>({
     resolver: zodResolver(ValidationSchemaChat),
     defaultValues: {
       message: ''
     }
   });
 
-  const onSubmit = (data: any) => {
-    console.log('Sent message:', data.message);
-    setMessage(''); // Clear the input field after submission
+  const onSubmit = (data: z.infer<typeof ValidationSchemaChat>) => {
+    try {
+      const payload = {
+        content: data.message,
+        chat_id: Number(roomId)
+      };
+      mutate(payload, {
+        onSuccess: () => {
+          form.reset();
+          setMessage(''); // Reset message after sending
+          refetch(); // Refetch the chat data to get the latest messages
+        },
+        onError: (error) => {
+          toast.error(error?.response?.data.message || 'An error occurred while sending the message');
+        }
+      });
+    } catch (error) {
+      throw new Error('An error occurred while sending the message');
+    }
   };
 
   useEffect(() => {
@@ -52,8 +70,9 @@ const ChatContent = () => {
 
   // Handle emoji selection
   const onEmojiClick = (emojiObject: { emoji: string }) => {
-    setMessage((prev) => prev + emojiObject.emoji);
-    form.setValue('message', message + emojiObject.emoji); // Set the emoji in the form field
+    const updatedMessage = message + emojiObject.emoji;
+    setMessage(updatedMessage); // Update message state
+    form.setValue('message', updatedMessage); // Set the emoji in the form field
   };
 
   if (isLoading) {
@@ -104,7 +123,9 @@ const ChatContent = () => {
                   </Avatar>
                 )}
                 <div
-                  className={`relative p-1.5 rounded-xl max-w-[70%] sm:max-w-[80%] shadow-xl ${isMe ? 'bg-primary-500 text-white' : 'bg-white text-black'}`}
+                  className={`relative p-1.5 rounded-xl max-w-[70%] sm:max-w-[80%] shadow-xl ${
+                    isMe ? 'bg-primary-500 text-white' : 'bg-white text-black'
+                  }`}
                 >
                   <p className="mr-3 mb-1 text-sm sm:text-base">{item?.content || 'No content'}</p>
                   <p className={`text-[11px] ${isMe ? 'text-white' : 'text-gray-500'} text-end`}>
@@ -148,7 +169,7 @@ const ChatContent = () => {
                         className="resize-none border-none align-middle"
                         {...field}
                         value={message}
-                        onChange={(e) => setMessage(e.target.value)}
+                        onChange={(e) => setMessage(e.target.value)} // Keep the message updated
                       />
                     </FormControl>
                   </FormItem>

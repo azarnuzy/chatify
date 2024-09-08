@@ -8,10 +8,10 @@ import './App.css';
 import { AuthProvider } from '@/hooks/useAuth';
 
 // import AiChat from '@/components/chat/AiChat';
-import ChatContent from '@/components/chat/ChatContent';
 import MainLayout from '@/components/layout/MainLayout';
 
 import AiChat from '@/pages/AiChat';
+import DetailChatPage from '@/pages/DetailChat';
 // import MainLayout from '@/layouts/MainLayout';
 import HomePage from '@/pages/Home';
 import LoginPage from '@/pages/Login';
@@ -42,7 +42,7 @@ function App() {
             }
           >
             <Route path="/" element={<HomePage />} />
-            <Route path="/chat/:roomId" element={<ChatContent />} />
+            <Route path="/chat/:roomId" element={<DetailChatPage />} />
             <Route path="/ai-chat" element={<AiChat />} />
           </Route>
           <Route path="/login" element={<LoginPage />} />
