@@ -41,7 +41,7 @@ export interface Message {
   created_at: string;
 }
 
-export interface TGetUserById {
+export interface TGetChatById {
   id: number;
   name: string | null;
   type: string;
@@ -85,7 +85,7 @@ export interface TCreateNewMessageBody {
 }
 
 export type TGetChatsByUserData = TMetaResponse<TGetChatsByUser>;
-export type TGetUserByIdData = TMetaResponseSingle<TGetUserById>;
+export type TGetChatByIdData = TMetaResponseSingle<TGetChatById>;
 export type TCreateNewChatData = TMetaResponseSingle<TCreateNewChat>;
 export type TGetMessagesData = TMetaResponse<TGetMessages>;
 export type TCreateNewMessageData = TMetaResponseSingle<TCreateNewMessage>;
