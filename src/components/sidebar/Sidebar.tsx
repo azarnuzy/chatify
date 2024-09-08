@@ -1,5 +1,6 @@
 import { BsFillChatDotsFill, BsRobot } from 'react-icons/bs';
 import { IoChatbubbleEllipsesOutline, IoMenu, IoMoon, IoSunny } from 'react-icons/io5';
+import { MdOutlineLogout } from 'react-icons/md';
 import { Link, useLocation } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 
@@ -23,7 +24,7 @@ const Sidebar = () => {
   const getIconClass = (path: string) => `text-3xl ${isActive(path) ? 'text-primary-main' : 'text-gray-500'}`;
 
   const getContainerClass = (path: string) =>
-    `flex gap-2 items-center p-2 rounded-md ${isActive(path) ? 'bg-dark-200' : ''} transition-colors duration-300`;
+    `flex gap-2 items-center p-2 rounded-md ${isActive(path) ? 'bg-dark-200' : ''} transition-colors duration-300 hover:bg-dark-200`;
 
   // Dark mode toggle button component
   const DarkModeToggle = () => (
@@ -78,9 +79,15 @@ const Sidebar = () => {
                     </li>
                   ))}
                 </ul>
-                <div className="flex gap-2 items-center">
-                  <DarkModeToggle />
-                  <span>Color Theme</span>
+                <div className="flex flex-col gap-4">
+                  <button className="rounded-md transition-colors duration-300 hover:bg-dark-200 w-full flex gap-2 py-1 items-center">
+                    <MdOutlineLogout className="text-3xl text-gray-500" />
+                    Logout
+                  </button>
+                  <div className="flex gap-2 items-center">
+                    <DarkModeToggle />
+                    <span>Color Theme</span>
+                  </div>
                 </div>
               </div>
             </SheetContent>
@@ -93,7 +100,14 @@ const Sidebar = () => {
             ))}
           </ul>
         </div>
-        <DarkModeToggle />
+        <div className="flex flex-col gap-4 items-center">
+          {/* <Button className="rounded-md transition-colors duration-300 hover:bg-dark-200" variant="ghost">
+          </Button> */}
+          <button className="rounded-md transition-colors duration-300 hover:bg-dark-200 w-full flex justify-center py-1 ">
+            <MdOutlineLogout className="text-3xl text-gray-500" />
+          </button>
+          <DarkModeToggle />
+        </div>
       </div>
     </div>
   );

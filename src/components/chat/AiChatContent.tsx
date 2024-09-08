@@ -89,7 +89,7 @@ const AiChatContent = () => {
     <div className="flex w-full flex-col">
       <div className="flex flex-col w-full pb-5 sm:mt-0 h-[calc(100vh-51.5px)] sm:h-[calc(100vh-52.5px)] justify-between relative">
         <div
-          className="flex flex-col gap-5 max-h-[calc(100vh-50px-60px)] sm:max-h-[calc(100vh-51.5px-50px-60px)] py-5 overflow-y-auto  px-5 "
+          className="flex flex-col gap-5 max-h-[calc(100vh-60px)] sm:max-h-[calc(100vh-51.5px-60px)] py-5 overflow-y-auto  px-5 "
           ref={containerRef}
           style={{ scrollBehavior: 'smooth' }}
         >
