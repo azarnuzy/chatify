@@ -89,7 +89,7 @@ const MainLayout = () => {
         </div>
 
         {/* Header for mobile on non-chat pages */}
-        {(isHomePage || isChatPage || isAiChatPage) && isMobile && (
+        {isMobile && (
           <div className=" flex justify-between items-center">
             <div className="h-[50px] bg-neutral-200 flex gap-2 px-5 items-center">
               <BsFillChatDotsFill className="text-primary-main text-3xl" />

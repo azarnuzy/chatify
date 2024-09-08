@@ -1,16 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import EmojiPicker from 'emoji-picker-react';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { BsEmojiSmile, BsSend } from 'react-icons/bs';
-import { FaArrowLeft } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { BsSend } from 'react-icons/bs';
 import { z } from 'zod';
 
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
 
 import { ValidationSchemaChat } from '@/utils/validations/chat';
@@ -58,8 +53,8 @@ const messages = [
   }
 ]; // Replace with dynamic data
 
-const ChatContent = () => {
-  const [message, setMessage] = useState('');
+const AiChatContent = () => {
+  const [message] = useState('');
 
   const form = useForm<z.infer<typeof ValidationSchemaChat>>({
     resolver: zodResolver(ValidationSchemaChat),
@@ -90,29 +85,9 @@ const ChatContent = () => {
     }, 0);
   };
 
-  // Handle emoji selection
-  const onEmojiClick = (emojiObject: { emoji: string }) => {
-    setMessage((prev) => prev + emojiObject.emoji);
-    form.setValue('message', message + emojiObject.emoji); // Set the emoji to the form value
-  };
-
   return (
     <div className="flex w-full flex-col">
-      <div className="h-[50px] bg-white w-full  flex justify-between items-center px-5">
-        <div className="flex gap-3 items-center">
-          <Link to="/">
-            <FaArrowLeft className="text-gray-500 text-2xl sm:hidden" />
-          </Link>
-          <Avatar className="bg-primary-500 text-white ">
-            <AvatarFallback>{'A'}</AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col">
-            <h4 className="text-gray-800 text-lg font-semibold">Arnold</h4>
-            <p className="text-xs">Online</p>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col w-full pb-5 sm:mt-0 h-[calc(100vh-51.5px)] sm:h-[calc(100vh-51.5px-51.5px)] justify-between relative">
+      <div className="flex flex-col w-full pb-5 sm:mt-0 h-[calc(100vh-51.5px)] sm:h-[calc(100vh-52.5px)] justify-between relative">
         <div
           className="flex flex-col gap-5 max-h-[calc(100vh-50px-60px)] sm:max-h-[calc(100vh-51.5px-50px-60px)] py-5 overflow-y-auto  px-5 "
           ref={containerRef}
@@ -148,18 +123,6 @@ const ChatContent = () => {
         <div className="absolute bottom-0 min-h-[60px] w-full bg-white rounded-md">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-2 items-center">
-              <Popover>
-                <PopoverTrigger>
-                  <Button type="button" variant={'ghost'} className="text-2xl text-gray-500">
-                    <BsEmojiSmile />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-fit border-none p-0">
-                  {' '}
-                  <EmojiPicker onEmojiClick={onEmojiClick} />
-                </PopoverContent>
-              </Popover>
-
               <FormField
                 control={form.control}
                 name="message"
@@ -186,4 +149,4 @@ const ChatContent = () => {
   );
 };
 
-export default ChatContent;
+export default AiChatContent;
