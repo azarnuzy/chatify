@@ -1,3 +1,4 @@
+import { FaSpinner } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 import { contentTrimmed, formatDate } from '@/lib/utils';
@@ -18,11 +19,18 @@ const SideChat = () => {
 
   // Handle loading and error states
   if (isLoading) {
-    return <div>Loading chats...</div>;
+    return (
+      <div className="h-full flex justify-center items-center">
+        <FaSpinner className="mr-2 h-4 w-4 animate-spin" />
+        Loading...
+      </div>
+    );
   }
 
   if (error) {
-    return <div>Error loading chats: {error.message}</div>;
+    return (
+      <div className="text-red-500 h-full flex items-center justify-center">Error loading chats: {error.message}</div>
+    );
   }
 
   return (
