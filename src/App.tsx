@@ -11,8 +11,9 @@ import MainLayout from '@/components/layout/MainLayout';
 
 import AiChat from '@/pages/AiChat';
 // import MainLayout from '@/layouts/MainLayout';
-import HomePage from '@/pages/HomePage';
+import HomePage from '@/pages/Home';
 import LoginPage from '@/pages/Login';
+import RegisterPage from '@/pages/Register';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/ai-chat" element={<AiChat />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
       </Routes>
     </AuthProvider>
   );
