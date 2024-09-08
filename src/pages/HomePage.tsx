@@ -1,6 +1,3 @@
-// src/pages/HomePage.tsx
-import React from 'react';
-
 import ContentHomePage from '@/components/homepage/ContentHomePage';
 
 const HomePage = () => {

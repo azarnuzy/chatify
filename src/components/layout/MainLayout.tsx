@@ -38,7 +38,7 @@ const MainLayout = () => {
         </div>
       )}
 
-      <div className={`flex flex-col w-full ${!isMobile ? 'w-[calc(100vw-50px)]' : ''}`}>
+      <div className={`flex flex-col bg-neutral-200 w-full ${!isMobile ? 'w-[calc(100vw-50px)]' : ''}`}>
         {/* Header for non-mobile devices */}
         <div className="hidden h-[50px] bg-neutral-200 sm:flex items-center">
           <h4>Chatify</h4>
@@ -52,11 +52,11 @@ const MainLayout = () => {
           </div>
         )}
 
-        <div className="flex h-[calc(100vh-50px)] flex-row border-2 shadow-md rounded-md">
+        <div className="flex h-[calc(100vh-50px)] flex-row border-2 shadow-md rounded-tl-md">
           {/* Render SideChat based on visibility rules */}
           {showSideChat && (
             <div
-              className={`${isMobile ? 'w-full' : 'sm:w-[300px] lg:w-[360px] xl:w-[480px]'} py-4 border-r-2 shadow-xl bg-white`}
+              className={`${isMobile ? 'w-full' : 'sm:w-[300px] lg:w-[360px] xl:w-[480px]'} py-4 border-r-2 shadow-xl bg-white rounded-md`}
             >
               <SideChat />
             </div>
@@ -64,7 +64,7 @@ const MainLayout = () => {
 
           {/* Main content area */}
           <div
-            className={`${mainContentWidth} ${isDarkMode ? 'bg-dark' : 'bg-light'} bg-repeat opacity-75 flex sm:justify-start items-center flex-col`}
+            className={`${mainContentWidth} ${isDarkMode ? 'bg-dark' : 'bg-light'} bg-repeat opacity-75 flex sm:justify-start items-center flex-col rounded-md not:rounded-tl-md`}
           >
             <Outlet />
           </div>
