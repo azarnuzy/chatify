@@ -5,7 +5,7 @@ import { FC, ReactElement, useState } from 'react';
 import { FieldValues, useController } from 'react-hook-form';
 import { MdChecklist } from 'react-icons/md';
 
-import { TTextFieldProps } from '@/types/text-field';
+import { TTextFieldProps } from '@/types/components/text-field';
 
 const EyeClose: FC = (): ReactElement => (
   <svg
