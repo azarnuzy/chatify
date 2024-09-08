@@ -114,7 +114,7 @@ const ChatContent = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-full pb-5 sm:mt-0 h-[calc(100vh-51.5px)] sm:h-[calc(100vh-51.5px-50px)] justify-between relative">
+      <div className="flex flex-col w-full pb-5 sm:mt-0 h-[calc(100vh-51.5px)] sm:h-[calc(100vh-51.5px-51.5px)] justify-between relative">
         <div
           className="flex flex-col gap-5 max-h-[calc(100vh-50px-60px)] sm:max-h-[calc(100vh-51.5px-50px-60px)] py-5 overflow-y-auto  px-5 "
           ref={containerRef}
@@ -123,7 +123,6 @@ const ChatContent = () => {
           {messages.map((item, i) => {
             return (
               <div className={`flex gap-3 ${i % 2 === 0 ? 'justify-end' : 'justify-start'}`} key={i}>
-                {/* Bot Answer  */}
                 {i % 2 === 1 && (
                   <>
                     <div className="relative p-2 rounded-xl max-w-[70%] sm:max-w-[80%] bg-white dark:bg-dark-gray-3 dark:text-light-white shadow-xl">
@@ -135,7 +134,6 @@ const ChatContent = () => {
                     </div>
                   </>
                 )}
-                {/* User Input */}
                 {i % 2 === 0 && (
                   <>
                     <div className="relative p-2 rounded-xl max-w-[70%] sm:max-w-[80%] bg-white shadow-xl dark:bg-dark-gray-3 dark:text-light-white">

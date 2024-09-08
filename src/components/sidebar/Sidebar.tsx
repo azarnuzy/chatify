@@ -20,7 +20,7 @@ const Sidebar = () => {
             <IoMenu className="text-gray-500 text-3xl" />
           </SheetTrigger>
           <SheetContent side={'left'} className="w-[200px] py-3">
-            <div className="flex gap-2 items-center mb-5">
+            <div className="flex gap-2 items-center pb-5">
               <BsFillChatDotsFill className="text-primary-main main text-3xl" />
               <h4>Chatify</h4>
             </div>
