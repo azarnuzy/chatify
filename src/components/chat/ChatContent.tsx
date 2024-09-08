@@ -1,8 +1,10 @@
 // src/components/ChatContent.js
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import EmojiPicker from 'emoji-picker-react';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { BsEmojiSmile, BsSend } from 'react-icons/bs';
 import { FaArrowLeft } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { z } from 'zod';
@@ -10,6 +12,7 @@ import { z } from 'zod';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
 
 import { ValidationSchemaChat } from '@/utils/validations/chat';
@@ -58,7 +61,7 @@ const messages = [
 ]; // Replace with dynamic data
 
 const ChatContent = () => {
-  const [message] = useState('');
+  const [message, setMessage] = useState('');
 
   const form = useForm<z.infer<typeof ValidationSchemaChat>>({
     resolver: zodResolver(ValidationSchemaChat),
@@ -75,7 +78,7 @@ const ChatContent = () => {
     setTimeout(() => {
       scrollToBottom();
     }, 0);
-  }, []);
+  }, [message]);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -87,6 +90,12 @@ const ChatContent = () => {
         behavior: 'smooth'
       });
     }, 0);
+  };
+
+  // Handle emoji selection
+  const onEmojiClick = (emojiObject: { emoji: string }) => {
+    setMessage((prev) => prev + emojiObject.emoji);
+    form.setValue('message', message + emojiObject.emoji); // Set the emoji to the form value
   };
 
   return (
@@ -143,19 +152,35 @@ const ChatContent = () => {
         <div className="absolute bottom-0 min-h-[60px] w-full bg-white rounded-md">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-2 items-center">
+              <Popover>
+                <PopoverTrigger>
+                  <Button type="button" variant={'ghost'} className="text-2xl text-gray-500">
+                    <BsEmojiSmile />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-fit border-none p-0">
+                  {' '}
+                  <EmojiPicker onEmojiClick={onEmojiClick} />
+                </PopoverContent>
+              </Popover>
+
               <FormField
                 control={form.control}
                 name="message"
                 render={({ field }) => (
                   <FormItem className="w-full ">
                     <FormControl>
-                      <Textarea placeholder="Type a message" className="resize-none " {...field} />
+                      <Textarea
+                        placeholder="Type a message"
+                        className="resize-none border-none align-middle"
+                        {...field}
+                      />
                     </FormControl>
                   </FormItem>
                 )}
               />
-              <Button className="w-fit" type="submit">
-                Submit
+              <Button className="w-fit text-xl" variant={'ghost'} type="submit">
+                <BsSend />
               </Button>
             </form>
           </Form>
