@@ -4,7 +4,7 @@ import EmojiPicker from 'emoji-picker-react'; // Assuming you have an emoji pick
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BsEmojiSmile, BsSend } from 'react-icons/bs';
-import { FaArrowLeft } from 'react-icons/fa';
+import { FaArrowLeft, FaSpinner } from 'react-icons/fa';
 import { Link, useParams } from 'react-router-dom';
 
 import { formatDate } from '@/lib/utils'; // Assuming you have the formatDate utility
@@ -57,7 +57,12 @@ const ChatContent = () => {
   };
 
   if (isLoading) {
-    return <div>Loading chat...</div>;
+    return (
+      <div className="h-full flex justify-center items-center text-3xl">
+        <FaSpinner className="mr-2 h-8 w-8 animate-spin text-3xl" />
+        Loading...
+      </div>
+    );
   }
 
   if (!data) {
@@ -85,7 +90,7 @@ const ChatContent = () => {
 
       <div className="flex flex-col w-full pb-5 sm:mt-0 h-[calc(100vh-51.5px)] sm:h-[calc(100vh-51.5px-51.5px)] justify-between relative">
         <div
-          className="flex flex-col gap-5 max-h-[calc(100vh-50px-60px)] sm:max-h-[calc(100vh-51.5px-50px-60px)] py-5 overflow-y-auto px-5"
+          className="flex flex-col gap-2 max-h-[calc(100vh-50px-60px)] sm:max-h-[calc(100vh-51.5px-50px-60px)] py-5 overflow-y-auto px-5"
           ref={containerRef}
         >
           {messages.map((item, i) => {
