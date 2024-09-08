@@ -14,12 +14,19 @@ import AiChat from '@/pages/AiChat';
 import HomePage from '@/pages/Home';
 import LoginPage from '@/pages/Login';
 import RegisterPage from '@/pages/Register';
+import { ProtectedRoute } from '@/routing/ProtectedRoute';
 
 function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route element={<MainLayout />}>
+        <Route
+          element={
+            <ProtectedRoute>
+              <MainLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route path="/" element={<HomePage />} />
           <Route path="/chat/:roomId" element={<ChatContent />} />
           <Route path="/ai-chat" element={<AiChat />} />
