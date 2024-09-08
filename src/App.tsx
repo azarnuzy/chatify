@@ -1,22 +1,27 @@
+// src/App.tsx
 import { Route, Routes } from 'react-router-dom';
 
 import './App.css';
 
+import { AuthProvider } from '@/hooks/useAuth';
+
+// import AiChat from '@/components/chat/AiChat';
 import ChatContent from '@/components/chat/ChatContent';
-import ContentHomePage from '@/components/homepage/ContentHomePage';
+import MainLayout from '@/components/layout/MainLayout';
 
+import AiChat from '@/pages/AiChat';
+// import MainLayout from '@/layouts/MainLayout';
+import HomePage from '@/pages/HomePage';
 import LoginPage from '@/pages/Login';
-
-import { AuthProvider } from './hooks/useAuth';
-import HomePage from './pages/HomePage';
 
 function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/" element={<HomePage />}>
-          <Route index element={<ContentHomePage />} />
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<HomePage />} />
           <Route path="/chat/:roomId" element={<ChatContent />} />
+          <Route path="/ai-chat" element={<AiChat />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
       </Routes>
