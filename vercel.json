@@ -3,6 +3,10 @@
     {
       "source": "/(.*)",
       "destination": "/index.html"
+    },
+    {
+      "source": "/proxy/:match*",
+      "destination": "https://realtime-chat-api.up.railway.app"
     }
   ]
 }

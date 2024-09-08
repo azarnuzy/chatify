@@ -8,5 +8,14 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src')
     }
+  },
+  server: {
+    proxy: {
+      '/proxy': {
+        target: 'https://realtime-chat-api.up.railway.app',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/proxy/, '')
+      }
+    }
   }
 });
