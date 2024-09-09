@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  chatify-app:
+    image: azarnuzy/chatify:latest
+    container_name: chatify-container
+    ports:
+      - '3000:3000' # Map port 3000 of the container to port 3000 of the host
+    environment:
+      - NODE_ENV=production
+      - VITE_API_BASE_URL=https://realtime-chat-api.up.railway.app/api
+      - VITE_SECRET_KEY_OPEN_AI=your_open_ai_secret_key
+    restart: unless-stopped
