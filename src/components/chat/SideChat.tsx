@@ -1,11 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaSpinner } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
+import { connectSocket, disconnectSocket, socket } from '@/lib/socket';
 import { useCreateNewChat, useGetAllUsers, useGetChatsByUser } from '@/hooks/chat/hook';
 
 import ChatList from '@/components/chat/ChatList';
@@ -17,6 +18,7 @@ import { TUser } from '@/types/users';
 
 const SideChat = () => {
   const navigate = useNavigate();
+  const [onlineUsers, setOnlineUsers] = useState<number[]>([]); // Store online users' IDs
 
   const form = useForm<z.infer<typeof ValidationSchemaNewChat>>({
     resolver: zodResolver(ValidationSchemaNewChat),
@@ -36,6 +38,22 @@ const SideChat = () => {
   const filteredUsers = userData?.data?.filter((user: TUser) => {
     return !data?.data?.some((chat) => chat.partner.some((partner) => partner.id === user.id));
   });
+
+  // Handle online users received from the WebSocket server
+  useEffect(() => {
+    connectSocket(); // Connect to the WebSocket server when component mounts
+
+    // Listen for the 'onlineUsers' event from the server
+    socket.on('onlineUsers', (users) => {
+      console.log('Online users:', users);
+      setOnlineUsers(users.map((user: { user_id: number }) => user.user_id)); // Extract user_ids
+    });
+
+    // Clean up by disconnecting the socket when the component unmounts
+    return () => {
+      disconnectSocket();
+    };
+  }, []);
 
   const onSubmit = async (data: z.infer<typeof ValidationSchemaNewChat>) => {
     try {
@@ -83,7 +101,7 @@ const SideChat = () => {
       ) : error ? (
         <div className="text-red-500 h-full flex items-center justify-center">Error loading chats: {error.message}</div>
       ) : (
-        <ChatList chats={data?.data} />
+        <ChatList chats={data?.data} onlineUsers={onlineUsers} />
       )}
     </div>
   );

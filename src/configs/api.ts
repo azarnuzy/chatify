@@ -16,7 +16,6 @@ api.interceptors.request.use(
     // Get the token from localStorage (or wherever you're storing it)
     const token = localStorage.getItem('token'); // Or use cookies/sessionStorage
 
-    console.log(token);
     // If token exists, add it to Authorization header
     if (token) {
       config.headers['Authorization'] = `Bearer ${JSON.parse(token)}`;

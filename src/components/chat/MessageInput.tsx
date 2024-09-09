@@ -3,6 +3,8 @@ import { UseFormReturn } from 'react-hook-form';
 import { BsEmojiSmile, BsSend } from 'react-icons/bs';
 import { z } from 'zod';
 
+import { socket } from '@/lib/socket'; // Import the socket instance
+
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -11,13 +13,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { ValidationSchemaChat } from '@/utils/validations/chat';
 
 interface MessageInputProps {
-  form: UseFormReturn<z.infer<typeof ValidationSchemaChat>>; // Replace with the appropriate form type
+  form: UseFormReturn<z.infer<typeof ValidationSchemaChat>>;
   message: string;
   setMessage: (value: string) => void;
   onSubmit: (data: z.infer<typeof ValidationSchemaChat>) => void;
+  recipientId: number; // Pass the recipient's ID
 }
 
-const MessageInput = ({ form, message, setMessage, onSubmit }: MessageInputProps) => {
+const MessageInput = ({ form, message, setMessage, onSubmit, recipientId }: MessageInputProps) => {
   // Handle emoji selection
   const onEmojiClick = (emojiObject: { emoji: string }) => {
     const updatedMessage = message + emojiObject.emoji;
@@ -25,10 +28,19 @@ const MessageInput = ({ form, message, setMessage, onSubmit }: MessageInputProps
     form.setValue('message', updatedMessage); // Set the emoji in the form field
   };
 
+  // Handle message submission
+  const handleSendMessage = (data: z.infer<typeof ValidationSchemaChat>) => {
+    // Emit the message via socket to the server
+    socket.emit('sendMessage', { content: data.message, recipientId });
+
+    // Call the form submit function
+    onSubmit(data);
+  };
+
   return (
     <div className="absolute bottom-0 min-h-[60px] w-full bg-white rounded-md">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-2 items-center">
+        <form onSubmit={form.handleSubmit(handleSendMessage)} className="flex gap-2 items-center">
           <Popover>
             <PopoverTrigger>
               <Button type="button" variant={'ghost'} className="text-2xl text-gray-500">

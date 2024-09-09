@@ -4,6 +4,7 @@ import {
   TCreateNewChatBody,
   TCreateNewChatData,
   TCreateNewMessageBody,
+  TCreateNewMessageData,
   TGetChatByIdData,
   TGetChatsByUserData,
   TGetMessagesData
@@ -34,7 +35,7 @@ export const getMessagesRequest = async (id: string): Promise<TGetMessagesData> 
   return data;
 };
 
-export const createNewMessageRequest = async (payload: TCreateNewMessageBody): Promise<TGetMessagesData> => {
+export const createNewMessageRequest = async (payload: TCreateNewMessageBody): Promise<TCreateNewMessageData> => {
   const { data } = await api.post('/v1/messages', payload);
 
   return data;

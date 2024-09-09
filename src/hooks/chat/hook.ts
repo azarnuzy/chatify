@@ -16,6 +16,7 @@ import {
   TCreateNewChatBody,
   TCreateNewChatData,
   TCreateNewMessageBody,
+  TCreateNewMessageData,
   TGetChatByIdData,
   TGetChatsByUserData,
   TGetMessagesData
@@ -88,11 +89,11 @@ export const useGetMessages = (id: string): UseQueryResult<TGetMessagesData, TMe
   });
 
 export const useCreateNewMessage = (): UseMutationResult<
-  TGetMessagesData,
+  TCreateNewMessageData,
   TMetaErrorResponse,
   TCreateNewMessageBody
 > => {
-  return useMutation<TGetMessagesData, TMetaErrorResponse, TCreateNewMessageBody>({
+  return useMutation<TCreateNewMessageData, TMetaErrorResponse, TCreateNewMessageBody>({
     mutationKey: ['create-new-message'],
     mutationFn: async (payload: TCreateNewMessageBody) => {
       try {
