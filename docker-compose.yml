@@ -9,5 +9,5 @@ services:
     environment:
       - NODE_ENV=production
       - VITE_API_BASE_URL=https://realtime-chat-api.up.railway.app/api
-      - VITE_SECRET_KEY_OPEN_AI=your_open_ai_secret_key
+      - VITE_SECRET_KEY_GEMINI_AI=your_gemini_ai_secret_key
     restart: unless-stopped
