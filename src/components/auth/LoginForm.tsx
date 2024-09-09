@@ -60,6 +60,7 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
         }
       });
     } catch (error) {
+      console.log(error);
       throw new Error('Invalid Response');
     }
   }

@@ -66,6 +66,7 @@ const SideChat = ({ onlineUsers }: SideChatProps) => {
         }
       });
     } catch (error) {
+      console.log(error);
       throw new Error('Invalid response');
     }
   };

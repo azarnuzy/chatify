@@ -68,6 +68,7 @@ const AiChatContent = () => {
         setFetching(false);
       }, 1000); // 1 second delay before fetching bot's response
     } catch (error) {
+      console.log('Error:', error);
       setFetching(false);
     }
   };

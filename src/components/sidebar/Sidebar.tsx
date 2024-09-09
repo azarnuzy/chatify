@@ -1,17 +1,13 @@
 import { BsFillChatDotsFill, BsRobot } from 'react-icons/bs';
-import { IoChatbubbleEllipsesOutline, IoMenu, IoMoon, IoSunny } from 'react-icons/io5';
+import { IoChatbubbleEllipsesOutline, IoMenu } from 'react-icons/io5';
 import { MdOutlineLogout } from 'react-icons/md';
 import { Link, useLocation } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
 
 import { useAuth } from '@/hooks/useAuth';
 
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
-import { darkModeState } from '../../states/sidebar/atom';
-
 const Sidebar = () => {
-  const [isDarkMode, setIsDarkMode] = useRecoilState(darkModeState);
   const location = useLocation();
 
   const { logout } = useAuth();
@@ -29,29 +25,6 @@ const Sidebar = () => {
 
   const getContainerClass = (path: string) =>
     `flex gap-2 items-center p-2 rounded-md ${isActive(path) ? 'bg-dark-200' : ''} transition-colors duration-300 hover:bg-dark-200`;
-
-  // Dark mode toggle button component
-  const DarkModeToggle = () => (
-    <div className="w-auto flex flex-col gap-4 items-center">
-      <div
-        className="flex items-center w-10 h-10 p-1 justify-center bg-primary-main rounded-full overflow-hidden relative cursor-pointer transition-transform duration-500 ease-in-out"
-        onClick={() => setIsDarkMode((prev) => !prev)}
-      >
-        {/* Sun Icon */}
-        <IoSunny
-          className={`absolute text-white transition-transform duration-500 transform ease-in-out ${
-            isDarkMode ? 'translate-y-full opacity-0' : 'translate-y-0 opacity-100'
-          } text-3xl`}
-        />
-        {/* Moon Icon */}
-        <IoMoon
-          className={`absolute transition-transform duration-500 transform ease-in-out ${
-            !isDarkMode ? 'translate-y-full opacity-0' : 'translate-y-0 opacity-100'
-          } text-3xl pb-1 text-gray-900`}
-        />
-      </div>
-    </div>
-  );
 
   // Menu items array for easier management
   const menuItems = [
