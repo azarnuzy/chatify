@@ -4,15 +4,22 @@ import { contentTrimmed, formatDate } from '@/lib/utils';
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
+import { TMetaErrorResponse } from '@/types';
 import { TGetChatsByUser } from '@/types/chat';
 
 interface ChatListProps {
   chats: TGetChatsByUser[] | undefined;
   onlineUsers: number[]; // List of online user IDs
+  error: TMetaErrorResponse | null;
 }
 
-const ChatList = ({ chats, onlineUsers }: ChatListProps) => {
-  if (!chats) return null;
+const ChatList = ({ chats, onlineUsers, error }: ChatListProps) => {
+  if (!chats)
+    return (
+      <div className="text-red-500 h-full flex items-center justify-center">
+        Error loading chats: {error?.message || 'An error occurred while getting the chat'}
+      </div>
+    );
 
   const sortedChats = chats?.sort((a, b) => {
     return new Date(b.latestMessage?.created_at).getTime() - new Date(a.latestMessage?.created_at).getTime();

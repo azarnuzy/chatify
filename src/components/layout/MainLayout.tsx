@@ -1,5 +1,5 @@
 // src/layouts/MainLayout.tsx
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BsFillChatDotsFill, BsRobot } from 'react-icons/bs';
 import { IoChatbubbleEllipsesOutline, IoMenu, IoMoon, IoSunny } from 'react-icons/io5';
 import { Link, Outlet, useLocation } from 'react-router-dom';
@@ -15,6 +15,7 @@ import Sidebar from '@/components/sidebar/Sidebar';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 import { darkModeState } from '@/states/sidebar/atom';
+import { userOnlineState } from '@/states/user/atom';
 const MainLayout = () => {
   const [isDarkMode, setIsDarkMode] = useRecoilState(darkModeState);
   const isMobile = useMediaQuery(639); // Mobile threshold
@@ -24,7 +25,22 @@ const MainLayout = () => {
 
   const userId = user?.user?.id;
 
-  console.log(userId);
+  const [onlineUsers, setOnlineUsers] = useRecoilState(userOnlineState); // Store online users' IDs
+  // Handle online users received from the WebSocket server
+  useEffect(() => {
+    connectSocket(); // Connect to the WebSocket server when component mounts
+
+    // Listen for the 'onlineUsers' event from the server
+    socket.on('onlineUsers', (users) => {
+      setOnlineUsers(users.map((user: { user_id: number }) => user.user_id)); // Extract user_ids
+    });
+
+    // Clean up by disconnecting the socket when the component unmounts
+    return () => {
+      disconnectSocket();
+    };
+  }, []);
+
   useEffect(() => {
     if (userId) {
       connectSocket(); // Establish socket connection
@@ -153,7 +169,7 @@ const MainLayout = () => {
             <div
               className={`${isMobile && isHomePage ? 'w-full' : 'sm:w-[300px] lg:w-[360px] xl:w-[480px]'} py-4 border-r-2 shadow-xl bg-white rounded-md`}
             >
-              <SideChat />
+              <SideChat onlineUsers={onlineUsers} />
             </div>
           )}
 
