@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { FaSpinner } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -24,7 +25,7 @@ const DetailChatPage = () => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>([]); // State to manage messages
   const { roomId } = useParams();
-  const { data, isLoading } = useGetChatsById(roomId as string); // Get chat data by roomId
+  const { data, isLoading, error } = useGetChatsById(roomId as string); // Get chat data by roomId
   const containerRef = useRef<HTMLDivElement>(null);
   const { mutate } = useCreateNewMessage();
 
@@ -92,11 +93,20 @@ const DetailChatPage = () => {
   };
 
   if (isLoading) {
-    return <div className="h-full flex justify-center items-center text-3xl">Loading...</div>;
+    return (
+      <div className="h-full flex justify-center items-center">
+        <FaSpinner className="mr-2 h-6 w-6 text-3xl animate-spin" />
+        Loading...
+      </div>
+    );
   }
 
   if (!data) {
-    return <div>No chat found.</div>;
+    return (
+      <div className="text-red-500 h-full flex items-center justify-center">
+        Error loading chats: {error?.message || 'An error occurred while getting the chat'}
+      </div>
+    );
   }
 
   const { partner, me } = data.data;
@@ -110,7 +120,7 @@ const DetailChatPage = () => {
           form={form}
           message={message}
           setMessage={setMessage}
-          recipientId={Number(roomId)}
+          recipientId={Number(recipent_id)}
           onSubmit={onSubmit}
         />
       </div>

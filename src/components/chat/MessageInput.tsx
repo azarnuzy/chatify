@@ -30,6 +30,7 @@ const MessageInput = ({ form, message, setMessage, onSubmit, recipientId }: Mess
 
   // Handle message submission
   const handleSendMessage = (data: z.infer<typeof ValidationSchemaChat>) => {
+    console.log(data);
     // Emit the message via socket to the server
     socket.emit('sendMessage', { content: data.message, recipientId });
 
@@ -63,7 +64,10 @@ const MessageInput = ({ form, message, setMessage, onSubmit, recipientId }: Mess
                     className="resize-none border-none align-middle"
                     {...field}
                     value={message}
-                    onChange={(e) => setMessage(e.target.value)} // Keep the message updated
+                    onChange={(e) => {
+                      field.onChange(e);
+                      setMessage(e.target.value);
+                    }} // Keep the message updated
                   />
                 </FormControl>
               </FormItem>

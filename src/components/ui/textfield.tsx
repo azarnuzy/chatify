@@ -1,5 +1,3 @@
-'use client';
-
 import clsx from 'clsx';
 import { FC, ReactElement, useState } from 'react';
 import { FieldValues, useController } from 'react-hook-form';
