@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { useCreateNewChat, useGetAllUsers, useGetChatsByUser } from '@/hooks/chat/hook';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 import ChatList from '@/components/chat/ChatList';
 import NewChatDialog from '@/components/chat/NewChatDialog';
@@ -32,13 +33,16 @@ const SideChat = ({ onlineUsers }: SideChatProps) => {
   const [isLoadingCreateChat, setIsLoadingCreateChat] = useState<boolean>(false);
   const [recipient_id, setRecipientId] = useState<number>(0);
 
+  const [me] = useLocalStorage('user', null);
   const { mutate } = useCreateNewChat();
   const { data, isLoading, error } = useGetChatsByUser();
   const { data: userData } = useGetAllUsers();
 
   // Filter out users that are already part of an existing chat
   const filteredUsers = userData?.data?.filter((user: TUser) => {
-    return !data?.data?.some((chat) => chat.partner.some((partner) => partner.id === user.id));
+    return (
+      !data?.data?.some((chat) => chat.partner.some((partner) => partner.id === user.id)) && user.id !== me.user.id
+    );
   });
 
   const onSubmit = async (data: z.infer<typeof ValidationSchemaNewChat>) => {
