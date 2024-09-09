@@ -24,9 +24,12 @@ export interface Partner {
 
 export interface LatestMessage {
   id: number;
+  chat_id: number;
+  sender_id: number;
   content: string;
-  sender: Sender;
   created_at: string;
+
+  sender: Sender;
 }
 
 export interface Sender {

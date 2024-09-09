@@ -1,5 +1,5 @@
 // src/layouts/MainLayout.tsx
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { BsFillChatDotsFill, BsRobot } from 'react-icons/bs';
 import { IoChatbubbleEllipsesOutline, IoMenu, IoMoon, IoSunny } from 'react-icons/io5';
 import { Link, Outlet, useLocation } from 'react-router-dom';
@@ -16,12 +16,17 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 import { darkModeState } from '@/states/sidebar/atom';
 import { userOnlineState } from '@/states/user/atom';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { useAuth } from '@/hooks/useAuth';
+import { MdOutlineLogout } from 'react-icons/md';
 const MainLayout = () => {
   const [isDarkMode, setIsDarkMode] = useRecoilState(darkModeState);
   const isMobile = useMediaQuery(639); // Mobile threshold
   const location = useLocation(); // Get current route
 
   const [user] = useLocalStorage('user', 0);
+  const { logout } = useAuth();
 
   const userId = user?.user?.id;
 
@@ -123,8 +128,24 @@ const MainLayout = () => {
 
       <div className={`flex flex-col bg-neutral-200 w-full ${!isMobile ? 'w-[calc(100vw-50px)]' : ''}`}>
         {/* Header for non-mobile devices */}
-        <div className="hidden h-[50px] bg-neutral-200 sm:flex items-center">
-          <h4>Chatify</h4>
+        <div className="hidden h-[50px] bg-neutral-200 sm:flex justify-between items-center pr-5">
+          <Link to="/">
+            <h4>Chatify</h4>
+          </Link>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              {' '}
+              <Avatar className="bg-primary-500 text-white ">
+                <AvatarFallback>{user?.user?.name[0] || 'U'}</AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <div className="p-4 flex flex-col bg-white">
+                <p className="font-semibold text-primary-main">{user?.user?.name || 'User'}</p>
+                <p className=" text-primary-main text-sm">{user?.user?.email || '@user@gmail.com'}</p>
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         {/* Header for mobile on non-chat pages */}
@@ -153,9 +174,18 @@ const MainLayout = () => {
                       </li>
                     ))}
                   </ul>
-                  <div className="flex gap-2 items-center">
-                    <DarkModeToggle />
-                    <span>Color Theme</span>
+                  <div className="flex flex-col gap-4">
+                    <button
+                      onClick={() => logout()}
+                      className="rounded-md transition-colors duration-300 hover:bg-dark-200 w-full flex gap-2 py-1 items-center"
+                    >
+                      <MdOutlineLogout className="text-3xl text-gray-500" />
+                      Logout
+                    </button>
+                    <div className="flex gap-2 items-center">
+                      <DarkModeToggle />
+                      <span>Color Theme</span>
+                    </div>
                   </div>
                 </div>
               </SheetContent>

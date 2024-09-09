@@ -95,29 +95,43 @@ const AiChatContent = () => {
           className="flex flex-col gap-5 max-h-[calc(100vh-60px)] sm:max-h-[calc(100vh-51.5px-60px)] py-5 overflow-y-auto px-5"
           ref={containerRef}
         >
-          {chatHistory.map((item, index) => (
-            <div key={index} className={`flex gap-3 ${item.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div
-                className={`relative p-2 rounded-xl max-w-[70%] sm:max-w-[80%] shadow-xl ${
-                  item.type === 'user'
-                    ? 'bg-primary-500 text-white'
-                    : 'bg-white dark:bg-dark-gray-3 dark:text-light-white'
-                }`}
-              >
-                {item.type === 'bot' ? (
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{item.message}</ReactMarkdown>
-                ) : (
-                  <p className="mr-3 mb-1 text-sm sm:text-base">{item.message}</p>
-                )}
-
-                {item.type === 'user' ? (
-                  <div className="w-9 h-2 bg-primary-500 absolute top-0 -right-1 rounded-br-3xl"></div>
-                ) : (
-                  <div className="w-9 h-2 bg-white absolute top-0 -left-1 rounded-bl-3xl dark:bg-dark-gray-3"></div>
-                )}
+          {chatHistory.length === 0 ? (
+            <div className="p-4">
+              <div className="flex justify-center items-center flex-col h-full">
+                <div className="py-5 px-4 rounded-lg bg-dark-600 text-white">
+                  <h2 className="text-center">Welcome to Chatify</h2>
+                  <h4 className="text-center">
+                    Chatify is a chat application that allows you to chat <br /> with your friends and ai chatbot in
+                    real-time.
+                  </h4>
+                </div>
               </div>
             </div>
-          ))}
+          ) : (
+            chatHistory.map((item, index) => (
+              <div key={index} className={`flex gap-3 ${item.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div
+                  className={`relative p-2 rounded-xl max-w-[70%] sm:max-w-[80%] shadow-xl ${
+                    item.type === 'user'
+                      ? 'bg-primary-500 text-white'
+                      : 'bg-white dark:bg-dark-gray-3 dark:text-light-white'
+                  }`}
+                >
+                  {item.type === 'bot' ? (
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{item.message}</ReactMarkdown>
+                  ) : (
+                    <p className="mr-3 mb-1 text-sm sm:text-base">{item.message}</p>
+                  )}
+
+                  {item.type === 'user' ? (
+                    <div className="w-9 h-2 bg-primary-500 absolute top-0 -right-1 rounded-br-3xl"></div>
+                  ) : (
+                    <div className="w-9 h-2 bg-white absolute top-0 -left-1 rounded-bl-3xl dark:bg-dark-gray-3"></div>
+                  )}
+                </div>
+              </div>
+            ))
+          )}
 
           {/* Show Skeleton Loader when waiting for the bot response */}
           {fetching && <SkeletonLoader />}

@@ -61,7 +61,9 @@ const Sidebar = () => {
 
   return (
     <div className="flex flex-col items-center my-3 h-[calc(100vh-24px)]">
-      <BsFillChatDotsFill className="text-primary-main text-3xl mb-5" />
+      <Link to={'/'}>
+        <BsFillChatDotsFill className="text-primary-main text-3xl mb-5" />
+      </Link>
       <div className="flex flex-col h-full justify-between items-center">
         <div className="flex flex-col gap-4">
           <Sheet>
@@ -69,10 +71,10 @@ const Sidebar = () => {
               <IoMenu className="text-gray-500 text-3xl" />
             </SheetTrigger>
             <SheetContent side="left" className="w-[200px] py-3">
-              <div className="flex gap-2 items-center pb-5">
+              <Link to={'/'} className="flex gap-2 items-center pb-5">
                 <BsFillChatDotsFill className="text-primary-main text-3xl" />
                 <h4>Chatify</h4>
-              </div>
+              </Link>
               <div className="flex flex-col justify-between font-semibold h-[calc(100vh-50px-20px)]">
                 <ul className="flex flex-col gap-4">
                   {menuItems.map((item) => (
@@ -84,14 +86,13 @@ const Sidebar = () => {
                   ))}
                 </ul>
                 <div className="flex flex-col gap-4">
-                  <button className="rounded-md transition-colors duration-300 hover:bg-dark-200 w-full flex gap-2 py-1 items-center">
+                  <button
+                    onClick={() => logout()}
+                    className="rounded-md transition-colors duration-300 hover:bg-dark-200 w-full flex gap-2 py-1 items-center"
+                  >
                     <MdOutlineLogout className="text-3xl text-gray-500" />
                     Logout
                   </button>
-                  <div className="flex gap-2 items-center">
-                    <DarkModeToggle />
-                    <span>Color Theme</span>
-                  </div>
                 </div>
               </div>
             </SheetContent>
@@ -115,7 +116,6 @@ const Sidebar = () => {
           >
             <MdOutlineLogout className="text-3xl text-gray-500" />
           </button>
-          <DarkModeToggle />
         </div>
       </div>
     </div>
