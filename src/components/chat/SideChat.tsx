@@ -68,7 +68,7 @@ const SideChat = () => {
           setIsLoadingCreateChat(false);
           toast.success('Chat created successfully');
           form.reset();
-          navigate(`/chat/${data.data.id}`);
+          navigate(`/chat/${data.data.id}?recipient=${recipient_id}`);
         },
         onError: (error) => {
           setIsLoadingCreateChat(false);

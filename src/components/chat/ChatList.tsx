@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { formatDate } from '@/lib/utils';
+import { contentTrimmed, formatDate } from '@/lib/utils';
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
@@ -40,7 +40,19 @@ const ChatList = ({ chats, onlineUsers }: ChatListProps) => {
               </div>
             </div>
             <div className="flex justify-between">
-              <p className="text-sm text-gray-500">{chat?.latestMessage?.content || 'No message'}</p>
+              <p className="text-sm text-gray-500 hidden sm:block md:hidden">
+                {/* Trimming the latest message content */}
+                {contentTrimmed(chat.latestMessage?.content || 'No message yet', 22)}
+              </p>
+              <p className="text-sm text-gray-500 block sm:hidden">
+                {contentTrimmed(chat.latestMessage?.content || 'No message yet', 35)}
+              </p>
+              <p className="text-sm text-gray-500 xl:hidden md:block hidden">
+                {contentTrimmed(chat.latestMessage?.content || 'No message yet', 35)}
+              </p>
+              <p className="text-sm text-gray-500 hidden xl:block">
+                {contentTrimmed(chat.latestMessage?.content || 'No message yet', 50)}
+              </p>
               <div className="flex items-center">
                 <div
                   className={`w-2 h-2 rounded-full ${onlineUsers.includes(chat.partner[0].id) ? 'bg-green-500' : 'bg-gray-300'}`}

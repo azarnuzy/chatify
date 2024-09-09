@@ -1,10 +1,13 @@
 // src/layouts/MainLayout.tsx
+import { useEffect } from 'react';
 import { BsFillChatDotsFill, BsRobot } from 'react-icons/bs';
 import { IoChatbubbleEllipsesOutline, IoMenu, IoMoon, IoSunny } from 'react-icons/io5';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { Toaster } from 'sonner';
 
+import { connectSocket, disconnectSocket, socket } from '@/lib/socket';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 import useMediaQuery from '@/hooks/useMediaQuery';
 
 import SideChat from '@/components/chat/SideChat';
@@ -16,6 +19,25 @@ const MainLayout = () => {
   const [isDarkMode, setIsDarkMode] = useRecoilState(darkModeState);
   const isMobile = useMediaQuery(639); // Mobile threshold
   const location = useLocation(); // Get current route
+
+  const [user] = useLocalStorage('user', 0);
+
+  const userId = user?.user?.id;
+
+  console.log(userId);
+  useEffect(() => {
+    if (userId) {
+      connectSocket(); // Establish socket connection
+
+      // Emit the addNewUser event to the server
+      socket.emit('addNewUser', userId);
+
+      // Clean up and disconnect the socket when the component unmounts
+      return () => {
+        disconnectSocket();
+      };
+    }
+  }, [userId]);
 
   // Helper to check if a path is active
   const isActive = (path: string) => {
