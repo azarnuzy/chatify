@@ -39,7 +39,7 @@ const MessageInput = ({ form, message, setMessage, onSubmit, recipientId }: Mess
   };
 
   return (
-    <div className="absolute bottom-0 min-h-[60px] w-full bg-white rounded-md">
+    <div className=" min-h-[60px] w-full bg-white rounded-md">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSendMessage)} className="flex gap-2 items-center">
           <Popover>

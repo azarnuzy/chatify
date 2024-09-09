@@ -121,7 +121,7 @@ const DetailChatPage = () => {
       />
       <div className="flex w-full flex-col">
         <ChatHeader partner={partner[0]} />
-        <div className="flex flex-col w-full pb-5 sm:mt-0 h-[calc(100vh-51.5px)] sm:h-[calc(100vh-51.5px-51.5px)] justify-between relative">
+        <div className="flex flex-col w-full sm:mt-0 h-[calc(100vh-51.5px-50px)] sm:h-[calc(100vh-51.5px-51.5px)] justify-between relative">
           <MessageList messages={messages} containerRef={containerRef} partner={partner[0]} me={me} />
           <MessageInput
             form={form}
