@@ -13,6 +13,7 @@ import ChatHeader from '@/components/chat/ChatHeader';
 import MessageInput from '@/components/chat/MessageInput';
 import MessageList from '@/components/chat/MessageList';
 
+import MetaTags from '@/utils/meta-tags/MetaTags';
 import { ValidationSchemaChat } from '@/utils/validations/chat';
 
 import { Message } from '@/types/chat'; // Assuming you have the correct Message type
@@ -112,19 +113,26 @@ const DetailChatPage = () => {
   const { partner, me } = data.data;
 
   return (
-    <div className="flex w-full flex-col">
-      <ChatHeader partner={partner[0]} />
-      <div className="flex flex-col w-full pb-5 sm:mt-0 h-[calc(100vh-51.5px)] sm:h-[calc(100vh-51.5px-51.5px)] justify-between relative">
-        <MessageList messages={messages} containerRef={containerRef} partner={partner[0]} me={me} />
-        <MessageInput
-          form={form}
-          message={message}
-          setMessage={setMessage}
-          recipientId={Number(recipent_id)}
-          onSubmit={onSubmit}
-        />
+    <>
+      <MetaTags
+        description="Chat with your friends and family with ease. Send messages, emojis, and more."
+        title="Chat - Chatify"
+        imageUrl="/detail-chat.png"
+      />
+      <div className="flex w-full flex-col">
+        <ChatHeader partner={partner[0]} />
+        <div className="flex flex-col w-full pb-5 sm:mt-0 h-[calc(100vh-51.5px)] sm:h-[calc(100vh-51.5px-51.5px)] justify-between relative">
+          <MessageList messages={messages} containerRef={containerRef} partner={partner[0]} me={me} />
+          <MessageInput
+            form={form}
+            message={message}
+            setMessage={setMessage}
+            recipientId={Number(recipent_id)}
+            onSubmit={onSubmit}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

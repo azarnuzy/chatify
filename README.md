@@ -1,50 +1,134 @@
-# React + TypeScript + Vite
+# Chatify - React Chat App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to **Chatify**, a modern chat application built with **React Vite**. This app has two core features: chatting with your friends and engaging with an AI-powered chatbot. The app is styled with TailwindCSS and powered by Socket.io for real-time messaging.
 
-Currently, two official plugins are available:
+## 🔥 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. **Chat with Friends**: Connect with friends in real-time.
+2. **AI Chatbot**: Engage with an intelligent AI chatbot, powered by Google Generative AI.
 
-## Expanding the ESLint configuration
+## 🌐 Live Demo
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+You can check out the live demo of the app [here](https://react-vite-chat.vercel.app/).
 
-- Configure the top-level `parserOptions` property like this:
+## 🖼️ Pages Preview
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- **Login**  
+  ![Login](/public/login.png)
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- **Register**  
+  ![Register](/public/register.png)
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- **Homepage**  
+  ![Homepage](/public/homepage.png)
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- **Chat**  
+  ![Chat](/public/detail-chat.png)
+
+- **AI Chat**  
+  ![AI Chat](/public/ai-chat.png)
+
+## 📋 Installation & Running Locally
+
+To run this project locally, follow these steps:
+
+### 1. Clone the repository:
+
+\`\`\`bash
+git clone https://github.com/your-username/chatify.git
+cd chatify
+\`\`\`
+
+### 2. Setup environment variables:
+
+Copy the `.env.example` to `.env` and add your environment variables:
+\`\`\`bash
+cp .env.example .env
+\`\`\`
+
+Ensure that the **SECRET_KEY** and **VITE_API_SECRET** are properly configured in your `.env` file.
+
+### 3. Install dependencies:
+
+You have two options to run the project.
+
+#### Option 1: Using Yarn
+
+\`\`\`bash
+yarn install
+\`\`\`
+
+To run the project in development mode:
+\`\`\`bash
+yarn run dev
+\`\`\`
+
+To build the project for production:
+\`\`\`bash
+yarn run build
+\`\`\`
+
+#### Option 2: Using Docker
+
+### Running with Docker
+
+Build the project using Docker:
+\`\`\`bash
+docker build -t chatify .
+\`\`\`
+
+Run the Docker container:
+\`\`\`bash
+docker run -p 3000:3000 chatify
+\`\`\`
+
+### Running with Docker Compose
+
+Ensure Docker is running on your machine, and run the following command:
+\`\`\`bash
+docker-compose up
+\`\`\`
+
+## 📦 Available Scripts
+
+Inside the `package.json`, you can find the following scripts:
+
+- \`yarn run dev\`: Starts the development server.
+- \`yarn run build\`: Builds the app for production.
+- \`yarn run lint\`: Runs the linter on the codebase.
+- \`yarn run preview\`: Previews the production build locally.
+
+## 🛠️ Technologies Used
+
+- **React**: UI framework for building interfaces.
+- **Vite**: Fast development build tool.
+- **Socket.io**: Real-time communication for the chat feature.
+- **Google Generative AI**: AI-powered chatbot.
+- **TailwindCSS**: Utility-first CSS framework for styling.
+- **React Hook Form & Zod**: For form validation and handling.
+- **React Router**: For navigation between pages.
+- **Recoil**: State management.
+- **React-Markdown**: For parsing and rendering markdown in AI responses.
+
+## 🛡️ Linting & Formatting
+
+This project is set up with:
+
+- **ESLint**: JavaScript/TypeScript linting.
+- **Prettier**: Code formatting.
+
+## 📜 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+## 🙋‍♂️ Author
+
+Created and maintained by **Muhammad Azar Nuzy**.
+
+Feel free to contribute, open issues, or fork the repository to improve the project!
+
+---
+
+### Additional Notes:
+
+- **Meta Tags**: This app comes with pre-configured meta tags for SEO and social sharing.
