@@ -34,17 +34,18 @@ To run this project locally, follow these steps:
 
 ### 1. Clone the repository:
 
-\`\`\`bash
+```bash
 git clone https://github.com/your-username/chatify.git
 cd chatify
-\`\`\`
+```
 
 ### 2. Setup environment variables:
 
 Copy the `.env.example` to `.env` and add your environment variables:
-\`\`\`bash
+
+```bash
 cp .env.example .env
-\`\`\`
+```
 
 Ensure that the **SECRET_KEY** and **VITE_API_SECRET** are properly configured in your `.env` file.
 
@@ -54,40 +55,45 @@ You have two options to run the project.
 
 #### Option 1: Using Yarn
 
-\`\`\`bash
+```bash
 yarn install
-\`\`\`
+```
 
 To run the project in development mode:
-\`\`\`bash
+
+```bash
 yarn run dev
-\`\`\`
+```
 
 To build the project for production:
-\`\`\`bash
+
+```bash
 yarn run build
-\`\`\`
+```
 
 #### Option 2: Using Docker
 
 ### Running with Docker
 
 Build the project using Docker:
-\`\`\`bash
+
+```bash
 docker build -t chatify .
-\`\`\`
+```
 
 Run the Docker container:
-\`\`\`bash
+
+```bash
 docker run -p 3000:3000 chatify
-\`\`\`
+```
 
 ### Running with Docker Compose
 
 Ensure Docker is running on your machine, and run the following command:
-\`\`\`bash
+
+```bash
 docker-compose up
-\`\`\`
+```
 
 ## 📦 Available Scripts
 
