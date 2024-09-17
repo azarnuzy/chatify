@@ -1,5 +1,3 @@
-// src/components/chat/AiChat.tsx
-
 import AiChatContent from '@/components/chat/AiChatContent';
 
 import MetaTags from '@/utils/meta-tags/MetaTags';

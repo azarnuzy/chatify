@@ -1,7 +1,9 @@
 import { io } from 'socket.io-client';
 
+import { SOCKET_URL } from '@/lib/constant';
+
 // Connect to the WebSocket server
-const SOCKET_URL = 'wss://realtime-chat-api.up.railway.app'; // Replace with your WebSocket server URL
+
 export const socket = io(SOCKET_URL, {
   transports: ['websocket', 'polling'], // Ensures WebSocket connection
   reconnection: true,
